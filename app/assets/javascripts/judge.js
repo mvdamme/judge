@@ -120,17 +120,18 @@
         attr = matches[1];
       }
       return attr;
-    };
+    },
     classFromName = function(name) {
-      var bracketed, klass = '';
-      if (bracketed = name.match(/\[(\w+)\]/g)) {
-        klass = (bracketed.length > 1) ? camelize(debracket(bracketed[0])) : name.match(/^\w+/)[0];
+      var nested, klass = '';
+      if (nested = name.match(/\[(\w+)\]/g)) {
+        klass = (nested.length > 1) ? selectNestedClass(nested) : name.match(/^\w+/)[0];
       }
-      return klass;
-    };
-    debracket = function(str) {
-      return str.replace(/\[|\]/g, '');
-    };
+      klass = klass.replace(/_attributes$/, '');
+      return camelize(klass);
+    },
+    selectNestedClass = function(nested) {
+      return nested[nested.length-2].replace(/\[|\]/g, '');
+    },
     camelize = function(str) {
       return str.replace(/(^[a-z]|\_[a-z])/g, function($1) {
         return $1.toUpperCase().replace('_','');

@@ -467,4 +467,24 @@ describe('judge', function() {
 
   });
 
+  describe('judge.urlFor', function() {
+    var el;
+    beforeEach(function() {
+      el = document.createElement('input');
+      el.value = 'leader@team.com';
+    });
+    it('handles typical input', function() {
+      el.name = 'admin_user[email]';
+      expect(judge.urlFor(el, 'presence')).toBe('/judge?klass=AdminUser&attribute=email&value=leader%40team.com&kind=presence');
+    });
+    it('handles input for association', function() {
+      el.name = 'user[user_profile][email]';
+      expect(judge.urlFor(el, 'presence')).toBe('/judge?klass=UserProfile&attribute=email&value=leader%40team.com&kind=presence');
+    });
+    it('handles input for association attributes', function() {
+      el.name = 'user[user_profile_attributes][email]';
+      expect(judge.urlFor(el, 'presence')).toBe('/judge?klass=UserProfile&attribute=email&value=leader%40team.com&kind=presence');
+    });
+  });
+
 });
